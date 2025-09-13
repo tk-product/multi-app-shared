@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.recipe.domain.mapper.RecipeSearchMapper">
+
+    <select id="findById" resultType="com.recipe.domain.entity.RecipeSearch">
+        <![CDATA[
+        WITH re_ing AS (
+            SELECT
+                recipe_id,
+                ingredient_id,
+                quantity
+            FROM
+                recipe_ingredient
+            WHERE
+                recipe_id = #{recipeId}
+        )
+        SELECT
+            re_ing.recipe_id,
+            re.recipe_name,
+            re.description,
+            ing.ingredient_name,
+            re_ing.quantity
+        FROM
+            re_ing
+            INNER JOIN ingredient AS ing
+                ON re_ing.ingredient_id = ing.ingredient_id
+            INNER JOIN recipe AS re
+                ON re_ing.recipe_id = re.recipe_id
+        ]]>
+    </select>
+
+    <select id="findByWord" resultType="com.recipe.domain.entity.RecipeSearch">
+        <!-- @formatter:off -->
+        WITH split_terms AS (
+            SELECT regexp_split_to_table(#{word}, '\s+') AS term
+        )
+
+        SELECT
+            recipe_id
+            , recipe_name
+            , description
+        FROM
+            recipe
+        WHERE
+            recipe_name ILIKE ANY (
+                SELECT '%' || term || '%' FROM split_terms
+                )
+            OR
+                description ILIKE ANY (
+                SELECT '%' || term || '%' FROM split_terms
+                )
+        <!-- @formatter:on -->
+    </select>
+
+</mapper>
