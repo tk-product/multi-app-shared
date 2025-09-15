@@ -4,9 +4,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/">Multi-Sample</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-		        data-bs-target="#navbarNav" aria-controls="navbarNav"
-		        aria-expanded="false" aria-label="Toggle navigation">
+		<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+		        class="navbar-toggler" data-bs-target="#navbarNav"
+		        data-bs-toggle="collapse" type="button">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
@@ -17,10 +17,12 @@
 			</ul>
 
 			<!-- ユーザー情報表示 -->
-			<div class="d-flex align-items-center" th:if="${user != null}">
+			<div class="d-flex align-items-center">
 			    <span class="navbar-text text-white me-3">
-			        <strong th:text="${user.userName}">UserName</strong>
-			        <span th:text="'(' + ${rolesStr} + ')'">ROLE_USER</span>
+			        <div th:if="${#authentication != null}">
+					    <span th:text="${#authentication.principal.username}">User</span> さん、ようこそ
+					</div>
+			        <span th:each="auth : ${#authentication.authorities}" th:text="${auth.authority}">ROLE_USER</span>
 			    </span>
 				<a class="btn btn-outline-light btn-sm" th:href="@{/logout}">ログアウト</a>
 			</div>
