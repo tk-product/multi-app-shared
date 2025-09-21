@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 public class Auth {
     private Long userId;
+    private String email;
     private String username;
     private String password;
     private boolean enabled;

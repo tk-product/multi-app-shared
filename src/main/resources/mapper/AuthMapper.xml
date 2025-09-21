@@ -9,6 +9,7 @@
     <select id="findByUsername" parameterType="string" resultType="com.recipe.domain.entity.Auth">
         SELECT
         u.user_id AS userId,
+        u.email,
         u.username,
         u.password,
         u.enabled
@@ -19,19 +20,19 @@
     <!-- ユーザーのロール一覧取得 -->
     <select id="findRolesByUserId" parameterType="long" resultType="string">
         SELECT
-        r.role_name
+        r.role_cd
         FROM roles r
-        INNER JOIN user_roles ur ON r.role_id = ur.role_id
+        INNER JOIN user_roles ur ON r.role_cd = ur.role_cd
         WHERE ur.user_id = #{userId}
     </select>
 
     <!-- ユーザーの権限一覧取得 -->
     <select id="findPermissionsByUserId" parameterType="long" resultType="string">
         SELECT DISTINCT
-        p.permission_name
+        p.permission_cd
         FROM permissions p
-        INNER JOIN role_permissions rp ON p.permission_id = rp.permission_id
-        INNER JOIN user_roles ur ON rp.role_id = ur.role_id
+        INNER JOIN role_permissions rp ON p.permission_cd = rp.permission_cd
+        INNER JOIN user_roles ur ON rp.role_cd = ur.role_cd
         WHERE ur.user_id = #{userId}
     </select>
 
