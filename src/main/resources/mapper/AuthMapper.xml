@@ -6,7 +6,7 @@
 <mapper namespace="com.recipe.domain.mapper.AuthMapper">
 
     <!-- ユーザー取得 -->
-    <select id="findByUsername" parameterType="string" resultType="com.recipe.domain.entity.Auth">
+    <select id="findByEmail" parameterType="string" resultType="com.recipe.domain.entity.Auth">
         SELECT
         u.user_id AS userId,
         u.email,
@@ -14,7 +14,7 @@
         u.password,
         u.enabled
         FROM users u
-        WHERE u.username = #{username}
+        WHERE u.email = #{email}
     </select>
 
     <!-- ユーザーのロール一覧取得 -->

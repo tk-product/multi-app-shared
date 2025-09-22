@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface AuthMapper {
 
-    Auth findByUsername(@Param("username") String username);
+    Auth findByEmail(@Param("email") String email);
 
     List<String> findRolesByUserId(@Param("userId") Long userId);
 
